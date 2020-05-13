@@ -1,0 +1,25 @@
+#!/bin/sh
+
+LAZABS=../../eld
+
+TESTS="simple-init.smt2 heaps.smt2 double-heap.smt2 \
+       array_noloop_crash.smt2 bubble-quans.smt2"
+
+for name in $TESTS; do
+    echo
+    echo $name
+    $LAZABS -pngNo -ssol -abstract:off "$@" $name 2>&1 | grep -v "^Elapsed Time"
+done
+
+TESTS="init.cleaned.smt2"
+
+for name in $TESTS; do
+    echo
+    echo $name
+    $LAZABS -abstract -splitClauses -pngNo -ssol "$@" $name 2>&1 | grep -v "^Elapsed Time"
+done
+
+echo
+echo fib.smt2
+$LAZABS -abstract -splitClauses -pngNo -hints:fib.hints -abstractTO:6 "$@" fib.smt2 2>&1 | grep -v "^Elapsed Time"
+

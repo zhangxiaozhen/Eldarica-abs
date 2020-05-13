@@ -1,0 +1,75 @@
+
+simple-adt-horn.smt2
+Theories: ADT(P)
+sat
+(define-fun I1 ((A Pair)) Bool (or (and (= (right A) true) (= (left A) 0)) (and (= (right A) true) (>= (left A) 2))))
+(define-fun I2 ((A Pair)) Bool (and (not (= (right A) true)) (>= (left A) 1)))
+
+bool.smt2
+sat
+(define-fun Inv ((A Bool) (B Bool)) Bool (or (and (= A true) (= B true)) (and (not (= A true)) (not (= B true)))))
+
+bool-unsat.smt2
+unsat
+
+0: FALSE -> 1
+1: Inv(false, false) -> 2
+2: Inv(true, true)
+
+list-synasc.smt2
+Theories: ADT(Nil, Cons)
+sat
+(define-fun Concat ((A IList) (B IList) (C IList)) Bool (or (and (and (= B C) (= (_size A) 1)) (= (_size A) 1)) (and (= (+ (_size B) (- (_size A) (_size C))) 1) (= (head C) (head A)))))
+
+list-synasc-unsat.smt2
+Theories: ADT(Nil, Cons)
+unsat
+
+0: FALSE -> 1
+1: Concat(Nil, Nil, Cons(5, Nil)) -> 2
+2: Concat(Nil, Nil, Nil)
+
+unbounded-tree.smt2
+Theories: ADT(node, nil, cons)
+sat
+
+record-cex.smt2
+Theories: ADT(ArRec0)
+unsat
+
+0: FALSE -> 1
+1: p7(1, ArRec0(1), ArRec0(1), 0) -> 2
+2: p6(1, ArRec0(1), ArRec0(1), 0) -> 3
+3: p5(1, ArRec0(1), ArRec0(1)) -> 4
+4: p1(1, ArRec0(1), ArRec0(1), 1) -> 5
+5: p4(1, ArRec0(1), ArRec0(1), 0) -> 6
+6: p3(1, ArRec0(1), ArRec0(1), 0) -> 7
+7: p2(1, ArRec0(1), ArRec0(1), 0) -> 8
+8: p1(1, ArRec0(1), ArRec0(1), 0) -> 9
+9: p0(1, ArRec0(1), ArRec0(1))
+
+strings2-unsat.smt2
+Warning: ignoring get-model
+Theories: ADT(XS_empty, XS_cons)
+unsat
+
+0: FALSE -> 1
+1: p4(XS_cons(72, XS_cons(101, XS_cons(108, XS_cons(108, XS_cons(111, XS_empty))))), XS_cons(87, XS_cons(111, XS_cons(114, XS_cons(108, XS_cons(100, XS_empty))))), XS_cons(72, XS_cons(101, XS_cons(108, XS_cons(108, XS_cons(111, XS_cons(87, XS_cons(111, XS_cons(114, XS_cons(108, XS_cons(100, XS_empty))))))))))) -> 2
+2: p3(XS_cons(72, XS_cons(101, XS_cons(108, XS_cons(108, XS_cons(111, XS_empty))))), XS_empty, XS_cons(87, XS_cons(111, XS_cons(114, XS_cons(108, XS_cons(100, XS_empty))))), XS_cons(72, XS_cons(101, XS_cons(108, XS_cons(108, XS_cons(111, XS_cons(87, XS_cons(111, XS_cons(114, XS_cons(108, XS_cons(100, XS_empty))))))))))) -> 3
+3: p3(XS_cons(72, XS_cons(101, XS_cons(108, XS_cons(108, XS_cons(111, XS_empty))))), XS_cons(72, XS_empty), XS_cons(87, XS_cons(111, XS_cons(114, XS_cons(108, XS_cons(100, XS_empty))))), XS_cons(101, XS_cons(108, XS_cons(108, XS_cons(111, XS_cons(87, XS_cons(111, XS_cons(114, XS_cons(108, XS_cons(100, XS_empty)))))))))) -> 4
+4: p3(XS_cons(72, XS_cons(101, XS_cons(108, XS_cons(108, XS_cons(111, XS_empty))))), XS_cons(101, XS_cons(72, XS_empty)), XS_cons(87, XS_cons(111, XS_cons(114, XS_cons(108, XS_cons(100, XS_empty))))), XS_cons(108, XS_cons(108, XS_cons(111, XS_cons(87, XS_cons(111, XS_cons(114, XS_cons(108, XS_cons(100, XS_empty))))))))) -> 5
+5: p3(XS_cons(72, XS_cons(101, XS_cons(108, XS_cons(108, XS_cons(111, XS_empty))))), XS_cons(108, XS_cons(101, XS_cons(72, XS_empty))), XS_cons(87, XS_cons(111, XS_cons(114, XS_cons(108, XS_cons(100, XS_empty))))), XS_cons(108, XS_cons(111, XS_cons(87, XS_cons(111, XS_cons(114, XS_cons(108, XS_cons(100, XS_empty)))))))) -> 6
+6: p3(XS_cons(72, XS_cons(101, XS_cons(108, XS_cons(108, XS_cons(111, XS_empty))))), XS_cons(108, XS_cons(108, XS_cons(101, XS_cons(72, XS_empty)))), XS_cons(87, XS_cons(111, XS_cons(114, XS_cons(108, XS_cons(100, XS_empty))))), XS_cons(111, XS_cons(87, XS_cons(111, XS_cons(114, XS_cons(108, XS_cons(100, XS_empty))))))) -> 7
+7: p3(XS_cons(72, XS_cons(101, XS_cons(108, XS_cons(108, XS_cons(111, XS_empty))))), XS_cons(111, XS_cons(108, XS_cons(108, XS_cons(101, XS_cons(72, XS_empty))))), XS_cons(87, XS_cons(111, XS_cons(114, XS_cons(108, XS_cons(100, XS_empty))))), XS_cons(87, XS_cons(111, XS_cons(114, XS_cons(108, XS_cons(100, XS_empty)))))) -> 8
+8: p2(XS_cons(72, XS_cons(101, XS_cons(108, XS_cons(108, XS_cons(111, XS_empty))))), XS_empty, XS_cons(111, XS_cons(108, XS_cons(108, XS_cons(101, XS_cons(72, XS_empty))))), XS_cons(87, XS_cons(111, XS_cons(114, XS_cons(108, XS_cons(100, XS_empty))))), XS_empty) -> 9
+9: p2(XS_cons(72, XS_cons(101, XS_cons(108, XS_cons(108, XS_cons(111, XS_empty))))), XS_cons(111, XS_empty), XS_cons(108, XS_cons(108, XS_cons(101, XS_cons(72, XS_empty)))), XS_cons(87, XS_cons(111, XS_cons(114, XS_cons(108, XS_cons(100, XS_empty))))), XS_empty) -> 10
+10: p2(XS_cons(72, XS_cons(101, XS_cons(108, XS_cons(108, XS_cons(111, XS_empty))))), XS_cons(108, XS_cons(111, XS_empty)), XS_cons(108, XS_cons(101, XS_cons(72, XS_empty))), XS_cons(87, XS_cons(111, XS_cons(114, XS_cons(108, XS_cons(100, XS_empty))))), XS_empty) -> 11
+11: p2(XS_cons(72, XS_cons(101, XS_cons(108, XS_cons(108, XS_cons(111, XS_empty))))), XS_cons(108, XS_cons(108, XS_cons(111, XS_empty))), XS_cons(101, XS_cons(72, XS_empty)), XS_cons(87, XS_cons(111, XS_cons(114, XS_cons(108, XS_cons(100, XS_empty))))), XS_empty) -> 12
+12: p2(XS_cons(72, XS_cons(101, XS_cons(108, XS_cons(108, XS_cons(111, XS_empty))))), XS_cons(101, XS_cons(108, XS_cons(108, XS_cons(111, XS_empty)))), XS_cons(72, XS_empty), XS_cons(87, XS_cons(111, XS_cons(114, XS_cons(108, XS_cons(100, XS_empty))))), XS_empty) -> 13
+13: p2(XS_cons(72, XS_cons(101, XS_cons(108, XS_cons(108, XS_cons(111, XS_empty))))), XS_cons(72, XS_cons(101, XS_cons(108, XS_cons(108, XS_cons(111, XS_empty))))), XS_empty, XS_cons(87, XS_cons(111, XS_cons(114, XS_cons(108, XS_cons(100, XS_empty))))), XS_empty) -> 14
+14: p1(XS_cons(72, XS_cons(101, XS_cons(108, XS_cons(108, XS_cons(111, XS_empty))))), XS_cons(87, XS_cons(111, XS_cons(114, XS_cons(108, XS_cons(100, XS_empty))))), XS_empty)
+
+testers.smt2
+Theories: ADT(XS_empty, XS_cons)
+sat
+(define-fun p1 ((A XS)) Bool (is-XS_cons A))
